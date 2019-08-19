@@ -19,16 +19,18 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:userId', (req, res, next) => {
+    const userId = req.params.userId;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(200).json({ message: 'Invalid user id' });
+    }
     User.findById(req.params.userId)
         .select('_id name login')
         .exec()
         .then(doc => {
-            console.log(doc);
-            if (doc) {
-                res.status(200).json(doc)
-            } else {
-                res.status(404).json({ message: 'User not found by ID' })
+            if (doc === null) {
+                return res.status(200).json({ message: 'User not found' });
             }
+            res.status(200).json(doc)
         })
         .catch(err => {
             console.log(err);
@@ -37,20 +39,27 @@ router.get('/:userId', (req, res, next) => {
 })
 
 router.post('/', (req, res) => {
+
     const user = new User({
         _id: new mongoose.Types.ObjectId,
         name: req.body.name,
         login: req.body.login,
     });
+
+    const validate = user.validateSync();
+    for (let field of (!validate ? [] : [validate.errors['name'], validate.errors['login']])) {
+        return field
+            && field.message
+            && res.status(200).json({message: field.message});
+    }
+
     user.save()
         .then(result => {
             res.status(201).json({ id: result._id })
         })
         .catch(err => {
             console.log(err);
-            res.status(500).json({
-                error: err
-            });
+            res.status(500).json({ error: err });
         });
 });
 

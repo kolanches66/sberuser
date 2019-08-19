@@ -5,7 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
-const dbUrl = `mongodb://localhost:${process.env.MONGODB_PORT}/sber`;
+const dbUrl = `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/${process.env.MONGODB_DB}`;
 mongoose.connect(dbUrl, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
@@ -20,21 +20,13 @@ app.use('/api/user', userRoutes);
 
 app.use((req, res, next) => {
    const error = new Error('404. Not found');
-   error.status(404);
+   error.status = 404;
    next(error);
 });
 
 app.use((error, req, res, next) => {
     res.status(error.status || 500);
-    res.json({
-       error: {
-           message: error.message
-       }
-    });
+    res.json({ message: error.message });
 });
-
-// app.listen(process.env.PORT, () => {
-//     console.log(`Server listening at port ${process.env.PORT}`);
-// });
 
 module.exports = app;

@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5d59c8e46b60af04dcbb0fed"},"name":"hello","login":"hello","__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5d59ca906b60af04dcbb0fee"},"name":"max","login":"test","__v":{"$numberInt":"0"}}
