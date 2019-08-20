@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "f474b0eb-12ef-4730-a372-952b7bea1bd9",
+		"name": "sberuser-local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "show user list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/user",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "show user {{userId}}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/user/:userId",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"user",
+						":userId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add new user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"hello\",\n\t\"login\": \"world\"\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/user",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "72c59cab-b11a-4a14-b803-f9295a94bc80",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "83a008d4-a540-4edb-9b42-54892fb5f3fd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "eb7d4127-bebf-45a5-baa4-7fa0058462e4",
+			"key": "api_url",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		}
+	]
+}

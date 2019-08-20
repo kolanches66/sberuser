@@ -20,9 +20,11 @@ router.get('/', (req, res, next) => {
 
 router.get('/:userId', (req, res, next) => {
     const userId = req.params.userId;
+
     if (!mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(200).json({ message: 'Invalid user id' });
     }
+
     User.findById(req.params.userId)
         .select('_id name login')
         .exec()

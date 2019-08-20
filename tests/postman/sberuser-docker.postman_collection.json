@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "f474b0eb-12ef-4730-a372-952b7bea1bd9",
-		"name": "sberbank-user",
+		"_postman_id": "dd4962ca-35f1-4c48-bbfd-172ec459c512",
+		"name": "sberuser-docker",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -56,7 +56,7 @@
 			]
 		},
 		{
-			"name": "show user 1",
+			"name": "show user {{userId}}",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -72,31 +72,8 @@
 					"variable": [
 						{
 							"key": "userId",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "show user 2",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{api_url}}/user/:userId",
-					"host": [
-						"{{api_url}}"
-					],
-					"path": [
-						"user",
-						":userId"
-					],
-					"variable": [
-						{
-							"key": "userId",
-							"value": "2"
+							"value": "test",
+							"type": "string"
 						}
 					]
 				}
@@ -107,31 +84,25 @@
 			"name": "add new user",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"ab\",\n\t\"login\": \"bb\"\n}"
+				},
 				"url": {
-					"raw": ""
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "add new message",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{api_url}}/message?text=hello",
+					"raw": "{{api_url}}/user",
 					"host": [
 						"{{api_url}}"
 					],
 					"path": [
-						"message"
-					],
-					"query": [
-						{
-							"key": "text",
-							"value": "hello"
-						}
+						"user"
 					]
 				}
 			},
@@ -162,9 +133,9 @@
 	],
 	"variable": [
 		{
-			"id": "900b910d-36e7-4d5b-8318-7d33018a1b5d",
+			"id": "00c1f0ce-bb26-4160-b8b2-4534037eddb3",
 			"key": "api_url",
-			"value": "http://localhost:3000/api",
+			"value": "http://localhost:8081/api",
 			"type": "string"
 		}
 	]

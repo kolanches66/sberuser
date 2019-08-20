@@ -9,13 +9,12 @@ const dbUrl = `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}
 mongoose.connect(dbUrl, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
-const userRoutes = require('./api/routes/user');
-
 const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const userRoutes = require('./api/routes/user');
 app.use('/api/user', userRoutes);
 
 app.use((req, res, next) => {
