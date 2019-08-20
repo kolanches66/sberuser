@@ -8,26 +8,23 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 
 router.get('/', (req, res, next) => {
+
     User.find()
-        .select('_id name login')
-        .exec()
         .then(docs => res.status(200).json(docs))
         .catch(err => {
             console.log(err);
             res.status(500).json({ error: err });
         });
+
 });
 
 router.get('/:userId', (req, res, next) => {
-    const userId = req.params.userId;
 
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
         return res.status(200).json({ message: 'Invalid user id' });
     }
 
     User.findById(req.params.userId)
-        .select('_id name login')
-        .exec()
         .then(doc => {
             if (doc === null) {
                 return res.status(200).json({ message: 'User not found' });
@@ -48,21 +45,41 @@ router.post('/', (req, res) => {
         login: req.body.login,
     });
 
-    const validate = user.validateSync();
-    for (let field of (!validate ? [] : [validate.errors['name'], validate.errors['login']])) {
-        return field
-            && field.message
-            && res.status(200).json({message: field.message});
+    const error = User.validateUser(user._id, req.body.name, req.body.login);
+    if (error) {
+        return res.status(200).json({message: error});
     }
 
     user.save()
         .then(result => {
-            res.status(201).json({ id: result._id })
+            res.status(201).json({ id: result._id });
         })
         .catch(err => {
             console.log(err);
             res.status(500).json({ error: err });
         });
+});
+
+router.put('/:userId', (req, res) => {
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.userId)) {
+        return res.status(200).json({ message: 'Invalid user id' });
+    }
+
+    const error = User.validateUser(req.params.userId, req.body.name, req.body.login);
+    if (error) {
+        return res.status(200).json({message: error});
+    }
+
+    User.findOneAndUpdate({ _id: req.params.userId }, {
+        $set: {
+            name: req.body.name,
+            login: req.body.login
+        }
+    }, { new: true }, (err, doc) => {
+        res.status(200).json(doc);
+    });
+
 });
 
 module.exports = router;

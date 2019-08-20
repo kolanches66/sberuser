@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const dbUrl = `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/${process.env.MONGODB_DB}`;
 mongoose.connect(dbUrl, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 
 const app = express();
 app.use(morgan('dev'));
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+    console.log(error.message);
     res.status(error.status || 500);
     res.json({ message: error.message });
 });
